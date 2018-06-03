@@ -22,6 +22,7 @@ class Chat(WhatsappObjectWithId):
 
     def __init__(self, js_obj, driver=None):
         super(Chat, self).__init__(js_obj, driver)
+        self.name = js_obj['contact']['pushname']
 
     @driver_needed
     def send_message(self, message):

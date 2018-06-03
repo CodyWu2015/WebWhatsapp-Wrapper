@@ -12,5 +12,6 @@ profiles
 .idea
 docs/_build
 .coverage
+*.swp
 .eggs
 *.sublime-*

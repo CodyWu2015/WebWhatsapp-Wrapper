@@ -195,6 +195,8 @@ class WhatsAPIDriver(object):
 
         elif self.client == "chrome":
             self._profile = webdriver.chrome.options.Options()
+            import getpass
+            self._profile.path = "/var/tmp/{0}/".format(getpass.getuser())
             if self._profile_path is not None:
                 self._profile.add_argument("user-data-dir=%s" % self._profile_path)
             if proxy is not None:
@@ -282,7 +284,7 @@ class WhatsAPIDriver(object):
         :rtype: list[Contact]
         """
         all_contacts = self.wapi_functions.getAllContacts()
-        return [Contact(contact, self) for contact in all_contacts]
+        return [Contact(contact, self) for contact in all_contacts if contact['isWAContact']]
 
     def get_my_contacts(self):
         """
@@ -312,7 +314,7 @@ class WhatsAPIDriver(object):
         """
         return self.wapi_functions.getAllChatIds()
 
-    def get_unread(self, include_me=False, include_notifications=False):
+    def get_unread(self, include_me=False, include_notifications=False, use_unread_count=0):
         """
         Fetches unread messages
         :param include_me: Include user's messages
@@ -324,7 +326,7 @@ class WhatsAPIDriver(object):
         :return: List of unread messages grouped by chats
         :rtype: list[MessageGroup]
         """
-        raw_message_groups = self.wapi_functions.getUnreadMessages(include_me, include_notifications)
+        raw_message_groups = self.wapi_functions.getUnreadMessages(include_me, include_notifications, use_unread_count)
 
         unread_messages = []
         for raw_message_group in raw_message_groups:

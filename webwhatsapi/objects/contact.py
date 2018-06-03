@@ -17,6 +17,7 @@ class Contact(WhatsappObjectWithId):
         :type driver: WhatsAPIDriver
         """
         super(Contact, self).__init__(js_obj, driver)
+        self.name = self.push_name = self.formatted_name = None
         if 'shortName' in js_obj:
             self.short_name = js_obj["shortName"]
         if 'pushname' in js_obj:
